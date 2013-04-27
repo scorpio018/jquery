@@ -12,8 +12,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <base href="<%=basePath%>">
     
     <title>My JSP 'middel.jsp' starting page</title>
-    <%--<script type="text/javascript" src="js/prototype.js"></script>
-    --%><script src="js/jquery-1.4.1.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/prototype.js"></script>
+    <script src="js/jquery-1.3.2.js" type="text/javascript"></script>
+    <script src="js/middle.js" type="text/javascript"></script>
     <script type="text/javascript">
     $().ready(function(){
    		var $inputname = "";
@@ -36,18 +37,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    		}).mouseout(function(){
    			$(this).css("background-color","#fff");
    		});
-   		//转入修改
-   		$("#goods_tab span").bind("click", function(){
-   			$(this).css("display", "none");
-   			$(this).after("<input type='text' maxlength='50' class='hidvalue' value='"+ $(this).html() +"'/>");
-   			$(this).next("input").focus();
-   			$inputname = $(this).attr("class");
-   			$hidsid = $(this).parent("td").siblings("td").children(".sid").val();
-   			//$hidsid = $(this).parent("td").sibling("td").hasClass(".sid");
-   			//alert($hidsid);
-		});
    		//列表内容修改完毕
-   		$("#goods_tab .hidvalue").live('blur keydown',function(e){
+   		$(".hidvalue").bind("blur keydown",function(e){
    			if(e.keyCode == 13 || e.keyCode == 0){
    				if($inputname == "sprice"){
     				var reg = /(^\d+$)|^\d+(\.\d+)?$/;
@@ -73,22 +64,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    					url : encodeURI(encodeURI("jqueryinputajax.action?"+$inputname+"="+$(this).val())),
    					type : "POST",
    					data : {
-   						"sid" : $hidsid
+   						"sid" : $hidsid,
    					}
    				});
-   				alert($(this).val());
-   				$(this).prev("span").html($(this).val());
-   				alert($(this).prev("span").html());
-   				$(this).prev("span").css("display","");
-   				$(this).remove();
+   				$(this).parent("td").children("span").css("display","");
+   				$(this).css("display", "none");
+  				$(this).parent("td").children("span").text($(this).val());
     		}
+		});
+  		//转入修改
+   		$("#goods_tab span").bind("click", function(){
+   			$(this).css("display", "none");
+   			$(this).after("<input type='text' maxlength='50' class='hidvalue' value='"+ $(this).html() +"'/>");
+   			$(this).next("input").focus();
+   			$inputname = $(this).attr("class");
+   			//$hidsid = $(this).parent("td").sibling("td").hasClass(".sid");
+   			//alert($hidsid);
+   			
+   			
 		});
 		//列表中对错的修改
 		$("#goods_tab td img").click(function(){
 			var $src = $(this).attr("src");
 			var $img = "images/yes.gif";
 			$inputname = $(this).attr("class");
-			$hidsid = $(this).parent("td").siblings("td").children(".sid").val();
+			$hidsid = $(this).next().val();
 			if($src == $img){
 			$.ajax({
 				url : "jqueryinputajax.action?"+$inputname+"Sta = 1&"+$inputname+"=false",
@@ -166,10 +166,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    					var jsonRaw = data.responseText;
    					var jsonContent = eval("(" + jsonRaw + ")");
    					alert(jsonContent.goods[0].sid);
-   					for(var i = 0; i < jsonContent.goods.length; i++){
-   						$("goods_tab :nth-child("+ (i + 2) +") td:eq(0)").html("<input type=\"checkbox\" name=\"sid\" class=\"sid\" value=\""+ jsonContent.goods[i].sid +"\"/>"+ jsonContent.goods[i].sid);
-   						
-   					}
    				}
    			});
    		});
