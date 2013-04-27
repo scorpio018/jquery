@@ -165,11 +165,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    				complete : function(data){
    					var jsonRaw = data.responseText;
    					var jsonContent = eval("(" + jsonRaw + ")");
-   					alert(jsonContent.goods[0].sid);
+   					alert(jsonContent.goods[0]["sid"]);
+   					var inputcolumn = ["sname","sno","sprice","sort","stock"];
+   					var imgcolumn = ["isupsale","isessence","isnew","ishotsale"];
    					for(var i = 0; i < jsonContent.goods.length; i++){
    						$("goods_tab :nth-child("+ (i + 2) +") td:eq(0)").html("<input type=\"checkbox\" name=\"sid\" class=\"sid\" value=\""+ jsonContent.goods[i].sid +"\"/>"+ jsonContent.goods[i].sid);
    						for(var j = 1; j <= 5; j ++ ){
-   							
+   							var $spanclass = $("goods_tab :nth-child("+ (i + 2) +") td:eq("+ j +") span").attr("class");
    						}
    					}
    				}
