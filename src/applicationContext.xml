@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop-2.5.xsd 
+http://www.springframework.org/schema/tx 
+http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+			
+			
+	<bean id="configBean" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location"><value>classpath:conf.properties</value></property>
+	</bean>
+			
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${driver}"/>
+		<property name="user" value="${username}"/>
+		<property name="password" value="${password}"/>
+		<property name="jdbcUrl" value="${db.url}"/>
+		<property name="maxPoolSize" value="${db.max}"/>
+		<property name="minPoolSize" value="${db.min}"/>
+	</bean>
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:sqlMapConfig.xml</value>
+		</property>
+	</bean>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="*"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut expression="execution(* com.scorpio.service.impl.*Impl.*(..))" id="myPointcut"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut"/>
+	</aop:config>
+			
+	<!-- Dao -->
+	<bean id="tfkjDao" class="com.scorpio.dao.impl.TfkjDaoImpl" scope="prototype">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClient"/>
+		</property>
+	</bean>	
+	<!-- Service -->
+	<bean id="tfkjService" class="com.scorpio.service.impl.TfkjServiceImpl" scope="prototype">
+		<property name="tfkjDao">
+			<ref bean="tfkjDao"/>
+		</property>
+	</bean>
+			
+	<!-- Action -->			
+	<bean id="jqueryAction" class="com.scorpio.action.JqueryListAction" scope="prototype">
+		<property name="tfkjService">
+			<ref bean="tfkjService"/>
+		</property>
+		<property name="goods">
+			<ref bean="goods"/>
+		</property>
+		<property name="pageginate">
+			<ref bean="pageginate"/>
+		</property>
+	</bean>
+	<!-- Bean -->
+	<bean id="goods" class="com.scorpio.bean.Goods" scope="prototype" abstract="false"></bean>
+	
+	<!-- Util -->
+	<bean id="pageginate" class="com.scorpio.util.Pageginate" scope="prototype" abstract="false"></bean>
+
+</beans>

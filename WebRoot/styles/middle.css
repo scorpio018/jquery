@@ -1,0 +1,80 @@
+/* CSS Document */
+body {
+	background-color: #DDEEF2;
+	font: 12px "sans-serif", "Arial", "Verdana";
+}
+
+#title {
+	background-color: #F4FAFB;
+	display: block;
+	height: 30px;
+	font-size: 14px;
+	font-weight: 600;
+	padding-top: 10px;
+	padding-left: 15px;
+}
+
+#title a {
+	display: block;
+	float: right;
+	margin-right: 10px;
+	height: 15px;
+	text-decoration: none;
+	font-weight: normal;
+	color: #666;
+	font-size: 10px;
+	background-color: #DDEEF2;
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding: 2px 5px 2px 20px;
+	border: #5FA6B6 3px solid;
+}
+
+#list_name {
+	color: #9CACAF;
+}
+
+#search_content {
+	height: 35px;
+	background-color: #F4FAFB;
+	margin-top: 10px;
+	padding-top: 5px;
+}
+
+#search_content img {
+	vertical-align: middle;
+}
+
+#search_content .search_span {
+	margin-top: 5px;
+}
+
+#search_sub {
+	padding: 2px 8px 0px;
+	margin: 2px 2px;
+	border: 1px solid #2D5082;
+	background: url(../images/button_bg.gif) repeat-x;
+	width: 60px;
+}
+#goods_tab{
+	width: 100%;
+	text-align: center;
+	background-color: #fff;
+	font-size: 12px;
+}
+#goods_tab td{
+	height: 25px;
+}
+#goods_tab .goods_tab_first{
+	text-decoration: underline;
+}
+#goods_tab td div{
+	float: left;
+	width: 60px;
+	cursor: pointer;
+	
+}
+#ajaxwait{
+	display: none;
+	text-align: center;
+}

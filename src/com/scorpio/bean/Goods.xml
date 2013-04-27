@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+    <sqlMap namespace="Goods">
+   		<typeAlias alias="Goods" type="com.scorpio.bean.Goods"/>
+   		<resultMap class="Goods" id="GoodsResult">
+   			<result property="sid" column="sid"/>
+   			<result property="sname" column="sname"/>
+   			<result property="sno" column="sno"/>
+   			<result property="sprice" column="sprice"/>
+   			<result property="isupsale" column="isupsale"/>
+   			<result property="isupsaleSta" column="isupsaleSta"/>
+   			<result property="isessence" column="isessence"/>
+   			<result property="isessenceSta" column="isessenceSta"/>
+   			<result property="isnew" column="isnew"/>
+   			<result property="isnewSta" column="isnewSta"/>
+   			<result property="ishotsale" column="ishotsale"/>
+   			<result property="ishotsaleSta" column="ishotsaleSta"/>
+   			<result property="sort" column="sort"/>
+   			<result property="stock" column="stock"/>
+   			<result property="state" column="state"/>
+   		</resultMap>
+   		<select id="getGoodsList" resultClass="Goods">
+   			SELECT * FROM Goods ORDER BY sort ASC
+   		</select>
+   		<insert id="addGoods" parameterClass="Goods">
+   			INSERT INTO Goods(sname,sno,sprice,isupsale,isessence,isnew,ishotsale,sort,stock,state) 
+   			values(#sname#,#sno#,#sprice#,#isupsale#,#isessence#,#isnew#,#ishotsale#,#sort#,#stock#,#state#)
+   		</insert>
+    	<update id="setGoodsById" parameterClass="Goods">
+    		UPDATE Goods
+    		<dynamic prepend="SET">
+    			<isNotEmpty prepend="," property="sname">
+    				sname = #sname#
+    			</isNotEmpty>
+    			<isNotEmpty prepend="," property="sno">
+    				sno = #sno#
+    			</isNotEmpty>
+    			<isNotEqual compareValue="0" prepend="," property="sprice">
+    				sprice = #sprice#
+    			</isNotEqual>
+    			<isNotEqual compareValue="-1" prepend="," property="sort">
+    				sort = #sort#
+    			</isNotEqual>
+    			<isNotEqual compareValue="-1" prepend="," property="stock">
+    				stock = #stock#
+    			</isNotEqual>
+    			<isNotEqual prepend="," compareValue="0" property="isupsaleSta">
+    				isupsale = #isupsale#
+    			</isNotEqual>
+    			<isNotEqual prepend="," compareValue="0" property="isessenceSta">
+    				isessence = #isessence#
+    			</isNotEqual>
+    			<isNotEqual prepend="," compareValue="0" property="isnewSta">
+    				isnew = #isnew#
+    			</isNotEqual>
+    			<isNotEqual prepend="," compareValue="0" property="ishotsaleSta">
+    				ishotsale = #ishotsale#
+    			</isNotEqual>
+    		</dynamic>
+    		WHERE sid = #sid#
+    	</update>
+    	<select id="getGoodsOrderBy" parameterClass="Goods" resultClass="Goods">
+    		SELECT * FROM Goods 
+    		<dynamic prepend="Order By">
+    			
+    		</dynamic>
+    	</select>
+    </sqlMap>
