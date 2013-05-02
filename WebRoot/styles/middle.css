@@ -72,7 +72,13 @@ body {
 	float: left;
 	width: 60px;
 	cursor: pointer;
-	
+}
+#goods_bottom{
+	text-align: center;
+}
+#goods_bottom td span{
+	width: 60px;
+	cursor: pointer;
 }
 #ajaxwait{
 	display: none;

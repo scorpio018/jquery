@@ -71,9 +71,10 @@ public class JqueryListAction extends BaseAction implements ModelDriven<Goods>{
 		return goods;
 	}
 	
-	public String list(){
+	public String list() throws IOException{
 		List<Goods> gs = Fenye.idsearch(current, showcount==0 ? 15 : showcount, "getGoodsList", null, tfkjService, pageginate, request);
-		request.setAttribute("goods", gs);
+//		request.setAttribute("goods", gs);
+		jsonajax(gs);
 		return SUCCESS;
 	}
 	public String listagain(){
@@ -83,33 +84,7 @@ public class JqueryListAction extends BaseAction implements ModelDriven<Goods>{
 	}
 	public String listajax() throws IOException{
 		List<Goods> gs = Fenye.idsearch(current, showcount==0 ? 15 : showcount, "getGoodsList", null, tfkjService, pageginate, request);
-		Vector<String> key = new Vector<String>();
-		key.add("sid");
-		key.add("sname");
-		key.add("sno");
-		key.add("sprice");
-		key.add("isupsale");
-		key.add("isessence");
-		key.add("isnew");
-		key.add("ishotsale");
-		key.add("sort");
-		key.add("stock");
-		Vector<Vector<String>> vss = new Vector<Vector<String>>();
-		for (Goods g : gs) {
-			Vector<String> v = new Vector<String>();
-			v.add(g.getSid()+"");
-			v.add(g.getSname());
-			v.add(g.getSno());
-			v.add(g.getSprice()+"");
-			v.add(g.isIsupsale() == true ? "1" : "0");
-			v.add(g.isIsessence() == true ? "1" : "0");
-			v.add(g.isIsnew() == true ? "1" : "0");
-			v.add(g.isIshotsale() == true ? "1" : "0");
-			v.add(g.getSort()+ "");
-			v.add(g.getStock() + "");
-			vss.add(v);
-		}
-		JSonUtil.jsonAjax(vss, key, response);
+		jsonajax(gs);
 		return null;
 	}
 	
@@ -218,5 +193,35 @@ public class JqueryListAction extends BaseAction implements ModelDriven<Goods>{
 		     e.printStackTrace();      
 		  }
 		return null;
+	}
+	
+	public void jsonajax(List<Goods> gs) throws IOException{
+		Vector<String> key = new Vector<String>();
+		key.add("sid");
+		key.add("sname");
+		key.add("sno");
+		key.add("sprice");
+		key.add("isupsale");
+		key.add("isessence");
+		key.add("isnew");
+		key.add("ishotsale");
+		key.add("sort");
+		key.add("stock");
+		Vector<Vector<String>> vss = new Vector<Vector<String>>();
+		for (Goods g : gs) {
+			Vector<String> v = new Vector<String>();
+			v.add(g.getSid()+"");
+			v.add(g.getSname());
+			v.add(g.getSno());
+			v.add(g.getSprice()+"");
+			v.add(g.isIsupsale() == true ? "1" : "0");
+			v.add(g.isIsessence() == true ? "1" : "0");
+			v.add(g.isIsnew() == true ? "1" : "0");
+			v.add(g.isIshotsale() == true ? "1" : "0");
+			v.add(g.getSort()+ "");
+			v.add(g.getStock() + "");
+			vss.add(v);
+		}
+		JSonUtil.jsonAjax(vss, key, response);
 	}
 }

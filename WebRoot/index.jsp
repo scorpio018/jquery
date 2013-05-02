@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <frame src="top.jsp" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" class="topFrame"/>
   <frameset cols="150,*" frameborder="no" border="0" framespacing="0">
   <frame src="Left.jsp" name="leftFrame" scrolling="No" noresize id="leftFrame" title="leftFrame" />
-    <frame src="middle3.jsp" name="mainFrame" id="mainFrame" title="mainFrame" />
+    <frame src="middle5.jsp" name="mainFrame" id="mainFrame" title="mainFrame" />
   </frameset>
 </frameset>
 <noframes>

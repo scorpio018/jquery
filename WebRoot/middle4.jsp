@@ -76,9 +76,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    						"sid" : $hidsid
    					}
    				});
-   				alert($(this).val());
    				$(this).prev("span").html($(this).val());
-   				alert($(this).prev("span").html());
    				$(this).prev("span").css("display","");
    				$(this).remove();
     		}
@@ -155,6 +153,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    		});
    		$("#goods_tab td div").click(function(){
    			var $current = $(this).attr("class");
+   			alert("1");
    			$.ajax({
    				url : "jquerylistajax.action",
    				data : {
@@ -165,13 +164,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    				complete : function(data){
    					var jsonRaw = data.responseText;
    					var jsonContent = eval("(" + jsonRaw + ")");
-   					alert(jsonContent.goods[0]["sid"]);
-   					var inputcolumn = ["sname","sno","sprice","sort","stock"];
-   					var imgcolumn = ["isupsale","isessence","isnew","ishotsale"];
+   					//alert(jsonContent.goods[0]["sid"]);
+   					var inputcolumn = ["sname","sno","sprice","isupsale","isessence","isnew","ishotsale","sort","stock"];
+   					//alert($("#goods_tab tr").length);
+   					alert(jsonContent.goods.length);
    					for(var i = 0; i < jsonContent.goods.length; i++){
-   						$("goods_tab :nth-child("+ (i + 2) +") td:eq(0)").html("<input type=\"checkbox\" name=\"sid\" class=\"sid\" value=\""+ jsonContent.goods[i].sid +"\"/>"+ jsonContent.goods[i].sid);
-   						for(var j = 1; j <= 5; j ++ ){
-   							var $spanclass = $("goods_tab :nth-child("+ (i + 2) +") td:eq("+ j +") span").attr("class");
+   						/* if($("#goods_tab tr").length - 2 < i){
+   							alert("1");
+   							$("#goods_tab tr:eq("+ $("#goods_tab tr").length +")").remove();
+   						} */
+   						$("#goods_tab :nth-child("+ (i + 2) +") td:eq(0)").html("<input type=\"checkbox\" name=\"sid\" class=\"sid\" value=\""+ jsonContent.goods[i].sid +"\"/>"+ jsonContent.goods[i].sid);
+   						$("#goods_tab tr:eq("+ i +")").css("display","");
+   						for(var j = 1; j <= inputcolumn.length; j ++ ){
+   							if(j <= 3 || j >= 8){
+   								$("#goods_tab tr:eq("+ (i + 1) +") td:eq("+ j +") span").html(jsonContent.goods[i][inputcolumn[j-1]]);
+   							}else{
+   								if(jsonContent.goods[i][inputcolumn[j - 1]] == 1){
+	   								$("#goods_tab :nth-child("+ (i + 1) +") td:eq("+ j +") img").attr("src", "images/yes.gif");
+	   							}else{
+	   								$("#goods_tab :nth-child("+ (i + 1) +") td:eq("+ j +") img").attr("src", "images/no.gif");
+	   							}
+   							}
+   						}
+   						alert($("#goods_tab tr:eq("+ i + 1 +")").html());
+   					}
+   					if(jsonContent.goods.length < "<s:property value="#request.pageginate.showCount"/>"){
+   						for(var i = jsonContent.goods.length; i <= <s:property value="#request.pageginate.showCount"/>; i ++){
+   							$("#goods_tab tr:eq("+ i +")").css("display","none");
    						}
    					}
    				}
