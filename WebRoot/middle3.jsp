@@ -119,11 +119,10 @@
 			}
 		});
 		//表格表头样式
-		$("#goods_tab .goods_tab_first_tr font").live("mouseover", function(){
+		$("#goods_tab .goods_tab_first_tr font").live("hover", function(e){
 			$(this).css({"color":"#9D7250","cursor":"pointer"});
 			$(this).attr("title", "点击对列表进行排序");
-		});
-		$("#goods_tab .goods_tab_first_tr font").live("mouseout", function(){
+		},function(){
 			$(this).css({"color":"#000","cursor":"default"});
 		});
     	$("#goods_bottom .showcount").bind("keydown",function(e){
